@@ -101,7 +101,8 @@ main.grid {
 .card .image {
   width: 100%;
   aspect-ratio: 1 / 1;
-  background: #f5f1ea;
+  background: #ffffff;
+  border: 1px solid var(--border);
   border-radius: 10px;
   overflow: hidden;
   display: flex;
@@ -114,10 +115,6 @@ main.grid {
   height: 100%;
   object-fit: contain;
   padding: 8px;
-}
-
-.card .image.broken {
-  background: linear-gradient(135deg, #efe9df 0%, #e5ddd0 100%);
 }
 
 .card .image.broken::after {
