@@ -18,7 +18,7 @@
       "last_checked": "2026-05-26"
     },
     {
-      "name": "VanMa Beauty massage (1h)",
+      "name": "Massage Voucher",
       "best_price_chf": 130.0,
       "best_url": "https://www.treatwell.ch/ort/vanma-beauty-zuerich/",
       "best_store": "VanMa Beauty",
@@ -26,7 +26,7 @@
       "manual": true
     },
     {
-      "name": "VanMa Beauty facial (from)",
+      "name": "Facial Voucher",
       "best_price_chf": 100.0,
       "best_url": "https://www.treatwell.ch/ort/vanma-beauty-zuerich/",
       "best_store": "VanMa Beauty",
@@ -43,11 +43,12 @@
     },
     {
       "name": "Le Tanneur Émilie handbag (small, black)",
-      "best_price_chf": 445.0,
-      "best_url": "https://www.letanneur.com/en-ch/products/emilie-small-handbag-double-flap-t-signature-leather-black",
+      "best_price_chf": 395.0,
+      "best_url": "https://www.letanneur.com/fr-ch/products/petit-sac-a-main-emilie-en-cuir-graine-noir",
       "best_store": "Le Tanneur",
       "last_checked": "2026-05-26",
-      "image_url": "https://www.letanneur.com/cdn/shop/files/TEMI1003N01-1_d52e2014-874e-431d-bec1-0d5ac03974a6.jpg?v=1744099239&width=2048"
+      "image_url": "https://www.letanneur.com/cdn/shop/files/TEMI1606N01-1_4b6a04e0-7e51-40fe-9eb2-ad2a8c5f5c48.jpg?v=1723021237&width=2048",
+      "manual": true
     }
   ]
 }
