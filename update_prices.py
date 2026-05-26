@@ -212,6 +212,9 @@ def main() -> int:
 
     for item in items:
         name = item["name"]
+        if item.get("manual"):
+            print(f"  [{name}] manual — skipped")
+            continue
         print(f"  [{name}] looking up…")
         try:
             result = lookup_item(client, name)
@@ -226,16 +229,19 @@ def main() -> int:
         item["last_checked"] = today
         item.pop("notes", None)
         item.pop("avg_price_chf", None)
-        img = fetch_image_url(item["best_url"], name)
-        img_source = "scrape"
-        if not img:
-            img = claude_image_lookup(client, name, item["best_url"])
-            img_source = "claude"
-        if img:
-            item["image_url"] = img
+        # Image: only look up if we don't already have one — first image stays
+        if item.get("image_url"):
+            img_source = "kept"
         else:
-            item.pop("image_url", None)
-            img_source = "none"
+            img = fetch_image_url(item["best_url"], name)
+            img_source = "scrape"
+            if not img:
+                img = claude_image_lookup(client, name, item["best_url"])
+                img_source = "claude"
+            if img:
+                item["image_url"] = img
+            else:
+                img_source = "none"
         updated += 1
         print(f"    {result.best_store}: CHF {result.best_price_chf:.2f} [img: {img_source}]")
 

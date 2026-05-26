@@ -5,37 +5,39 @@
   "items": [
     {
       "name": "Shokz OpenRun Pro 2 Mini",
-      "best_price_chf": 149.99,
-      "best_url": "https://www.galaxus.ch/en/s1/product/shokz-openrun-pro-2-mini-no-noise-cancelling-12-h-wireless-headphones-47472492",
+      "best_price_chf": 199.99,
+      "best_url": "https://www.galaxus.ch/de/s1/product/shokz-openrun-pro-2-mini-usb-c-12-h-kabellos-kopfhoerer-47472492",
       "best_store": "Galaxus",
       "last_checked": "2026-05-26"
     },
     {
       "name": "Dyson Supersonic hairdryer",
-      "best_price_chf": 425.0,
-      "best_url": "https://www.haar-shop.ch/en/67465379-dyson-supersonic-haartrockner.html",
-      "best_store": "Haar-shop.ch",
+      "best_price_chf": 308.0,
+      "best_url": "https://www.digitec.ch/de/s1/product/dyson-supersonic-hd07-foehn-58241650",
+      "best_store": "Digitec",
       "last_checked": "2026-05-26"
     },
     {
-      "name": "Massage voucher (Zurich)",
-      "best_price_chf": 70.0,
-      "best_url": "https://www.physiozentrum.ch/en/order-vouchers/",
-      "best_store": "Physiozentrum",
-      "last_checked": "2026-05-26"
+      "name": "VanMa Beauty massage (1h)",
+      "best_price_chf": 130.0,
+      "best_url": "https://www.treatwell.ch/ort/vanma-beauty-zuerich/",
+      "best_store": "VanMa Beauty",
+      "image_url": "https://cdn1.treatwell.net/images/view/v2.i12888816.w1080.h720.xB9AE08F9/",
+      "manual": true
     },
     {
-      "name": "Facial voucher (Zurich)",
-      "best_price_chf": 69.0,
-      "best_url": "https://www.elementsthaispa.ch/en/vouchers-zurich/",
-      "best_store": "Elements Thai Spa",
-      "last_checked": "2026-05-26"
+      "name": "VanMa Beauty facial (from)",
+      "best_price_chf": 100.0,
+      "best_url": "https://www.treatwell.ch/ort/vanma-beauty-zuerich/",
+      "best_store": "VanMa Beauty",
+      "image_url": "https://cdn1.treatwell.net/images/view/v2.i12888816.w1080.h720.xB9AE08F9/",
+      "manual": true
     },
     {
       "name": "Sonos Sub Mini (black)",
-      "best_price_chf": 317.0,
-      "best_url": "https://www.toppreise.ch/preisvergleich/Subwoofer/SONOS-Sub-Mini-Schwarz-SUBM1EU1BLK-p704625",
-      "best_store": "Toppreise.ch",
+      "best_price_chf": 242.95,
+      "best_url": "https://www.interdiscount.ch/de/product/sonos-sub-mini-subwoofer-schwarz-0009887795",
+      "best_store": "Interdiscount",
       "last_checked": "2026-05-26",
       "image_url": "https://imgsrv.toppreise.ch/img/704625/360-c6b9d5"
     }
