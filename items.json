@@ -5,45 +5,39 @@
   "items": [
     {
       "name": "Shokz OpenRun Pro 2 Mini",
-      "best_price_chf": 169.95,
-      "best_url": "https://www.galaxus.ch/en/s1/product/shokz-openrun-pro-2-mini-usb-c-240-h-wireless-headphones-47472493",
+      "best_price_chf": 149.99,
+      "best_url": "https://www.galaxus.ch/en/s1/product/shokz-openrun-pro-2-mini-no-noise-cancelling-12-h-wireless-headphones-47472492",
       "best_store": "Galaxus",
-      "avg_price_chf": 169.95,
       "last_checked": "2026-05-26"
     },
     {
       "name": "Dyson Supersonic hairdryer",
-      "best_price_chf": 449.0,
+      "best_price_chf": 425.0,
       "best_url": "https://www.haar-shop.ch/en/67465379-dyson-supersonic-haartrockner.html",
-      "best_store": "Haar-shop",
-      "avg_price_chf": 447.0,
+      "best_store": "Haar-shop.ch",
       "last_checked": "2026-05-26"
     },
     {
       "name": "Massage voucher (Zurich)",
-      "best_price_chf": 75.0,
+      "best_price_chf": 70.0,
       "best_url": "https://www.physiozentrum.ch/en/order-vouchers/",
       "best_store": "Physiozentrum",
-      "avg_price_chf": 120.0,
       "last_checked": "2026-05-26"
     },
     {
       "name": "Facial voucher (Zurich)",
-      "best_price_chf": 130.0,
-      "best_url": "https://e-surprise.ch/en/gift-vouchers/39506/facial-treatment-at-beauty-corner",
-      "best_store": "e-surprise",
-      "avg_price_chf": 165.0,
-      "last_checked": "2026-05-26",
-      "image_url": "https://images.e-guma.ch/6213/thumbs/b2e85287c9a84285ae126f682e01b2b2.jpg?w=1200&h=630&fit=crop&auto=format"
+      "best_price_chf": 69.0,
+      "best_url": "https://www.elementsthaispa.ch/en/vouchers-zurich/",
+      "best_store": "Elements Thai Spa",
+      "last_checked": "2026-05-26"
     },
     {
       "name": "Sonos Sub Mini (black)",
-      "best_price_chf": 242.95,
-      "best_url": "https://www.interdiscount.ch/de/product/sonos-sub-mini-subwoofer-schwarz-0009887795",
-      "best_store": "Interdiscount",
-      "avg_price_chf": 349.0,
+      "best_price_chf": 317.0,
+      "best_url": "https://www.toppreise.ch/preisvergleich/Subwoofer/SONOS-Sub-Mini-Schwarz-SUBM1EU1BLK-p704625",
+      "best_store": "Toppreise.ch",
       "last_checked": "2026-05-26",
-      "image_url": "https://www.interdiscount.ch/static-shops/products/720/030a2d3ed4bcb9c543e6ade5072f1124c93b.jpg"
+      "image_url": "https://imgsrv.toppreise.ch/img/704625/360-c6b9d5"
     }
   ]
 }

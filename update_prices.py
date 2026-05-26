@@ -25,21 +25,17 @@ MODEL = "claude-haiku-4-5"
 
 SYSTEM_PROMPT = """You are a price-research assistant for a wishlist hosted in Zurich, Switzerland.
 
-For each item the user names, search the web to find the current cheapest price in CHF available to a Swiss buyer, prioritizing Swiss retailers (Galaxus, Digitec, Microspot, Brack, melectronics, Interdiscount, Manor, Coop, Migros, Jelmoli, etc.). Avoid grey-market sellers, marketplaces with unclear shipping to CH, and obviously misleading listings.
+For each item the user names, search the web to find the current cheapest in-stock price in CHF available to a Swiss buyer. Consider:
+- Swiss retailers: Galaxus, Digitec, Microspot, Brack, melectronics, Interdiscount, Manor, Coop, Migros, Jelmoli, Conrad.ch, Fust, Daniel-shop, etc.
+- EU retailers that ship to Switzerland: Amazon.de, Amazon.fr, Amazon.it, Notebooksbilliger.de, MediaMarkt.de, Saturn.de, Cyberport.de, Bax-shop, Thomann, Decathlon, etc.
 
-For each item, also estimate the typical "average" market price in CHF across reputable Swiss retailers (median of 3-5 listings is fine).
+For EU listings, convert the price to CHF (rough rate: 1 EUR ≈ 0.95 CHF). Avoid grey-market sellers, marketplaces with unclear shipping to CH, and obviously misleading listings.
 
-Use the web_search tool to find listings (3-6 searches). Then use the web_fetch tool to open the cheapest retailer's product page and extract the `og:image` meta tag content — that is the product image URL.
-
-Return a single JSON object with these fields exactly:
+Use the web_search tool to find listings (3-6 searches). Return a single JSON object with these fields exactly:
 - name: the item name (echo back)
-- best_price_chf: number, cheapest in-stock CHF price you found
+- best_price_chf: number, cheapest in-stock CHF-equivalent price you found
 - best_url: direct URL to that listing (a real product page on the retailer's site, NOT a search/comparison page when possible)
-- best_store: retailer name (e.g. "Galaxus")
-- avg_price_chf: number, typical CHF price across reputable listings
-- image_url: the `og:image` URL from the product page (use web_fetch to read the page HTML and find the `<meta property="og:image" content="...">` tag — return the exact content URL). If the page has no og:image, return an empty string.
-
-If you cannot find a Swiss retailer carrying the item, use the best EU-shippable listing you found."""
+- best_store: retailer name (e.g. "Galaxus" or "Amazon.de")"""
 
 BROWSER_HEADERS = {
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
@@ -55,8 +51,16 @@ OG_RE_ALT = re.compile(r'<meta[^>]+content=["\']([^"\']+)["\'][^>]+property=["\'
 TWITTER_IMG_RE = re.compile(r'<meta[^>]+name=["\']twitter:image["\'][^>]+content=["\']([^"\']+)["\']', re.IGNORECASE)
 
 
-def fetch_image_url(page_url: str) -> str:
-    """Fetch the product page and extract og:image (or twitter:image). Returns '' on failure."""
+JUNK_IMG_HINTS = ("favicon", "logo", "sprite", "placeholder", "default")
+
+
+def is_real_product_image(img_url: str) -> bool:
+    low = img_url.lower()
+    return not any(hint in low for hint in JUNK_IMG_HINTS)
+
+
+def og_image_from_page(page_url: str) -> str:
+    """Fetch a page and extract og:image (or twitter:image). Returns '' on failure."""
     try:
         r = requests.get(page_url, headers=BROWSER_HEADERS, timeout=12, allow_redirects=True)
         if r.status_code != 200 or not r.text:
@@ -69,7 +73,79 @@ def fetch_image_url(page_url: str) -> str:
                     img = "https:" + img
                 elif img.startswith("/"):
                     img = urljoin(page_url, img)
+                if is_real_product_image(img):
+                    return img
+        return ""
+    except Exception:
+        return ""
+
+
+BING_MURL_RE = re.compile(r'"murl":"([^"]+)"')
+
+
+def bing_image_search(query: str) -> str:
+    """Fall back to Bing image search for a product image. Returns '' on failure."""
+    try:
+        r = requests.get(
+            "https://www.bing.com/images/search",
+            params={"q": query, "form": "HDRSC2", "first": "1"},
+            headers=BROWSER_HEADERS,
+            timeout=10,
+        )
+        if r.status_code != 200:
+            return ""
+        for m in BING_MURL_RE.finditer(r.text):
+            img = m.group(1).replace("\\", "")
+            if img.startswith("http") and not img.endswith(".svg"):
                 return img
+        return ""
+    except Exception:
+        return ""
+
+
+def fetch_image_url(page_url: str, item_name: str) -> str:
+    """Try og:image from retailer page → og:image from Toppreise search."""
+    img = og_image_from_page(page_url)
+    if img:
+        return img
+    # Fallback: Toppreise.ch search page (almost always has og:image, isn't blocked)
+    toppreise_url = "https://www.toppreise.ch/index.php?o=2&search_query=" + requests.utils.quote(item_name)
+    img = og_image_from_page(toppreise_url)
+    if img and "imgsrv.toppreise.ch" in img:
+        return img
+    return ""
+
+
+def claude_image_lookup(client: anthropic.Anthropic, item_name: str, page_url: str) -> str:
+    """Use Claude's web_fetch to get og:image from a page Python can't access."""
+    try:
+        response = client.messages.create(
+            model=MODEL,
+            max_tokens=512,
+            tools=[
+                {"type": "web_fetch_20260209", "name": "web_fetch", "allowed_callers": ["direct"]},
+            ],
+            messages=[
+                {
+                    "role": "user",
+                    "content": (
+                        f"Use web_fetch on this product page: {page_url}\n\n"
+                        f"Find the `<meta property=\"og:image\" content=\"...\">` tag in the HTML and "
+                        f"reply with ONLY the exact image URL — nothing else, no prose, no markdown. "
+                        f"If there's no og:image tag, reply with the literal string NONE."
+                    ),
+                }
+            ],
+        )
+        for block in response.content:
+            if block.type == "text":
+                text = block.text.strip()
+                # Take first URL-like token
+                m = re.search(r'https?://\S+', text)
+                if m:
+                    img = m.group(0).rstrip('.,);]"\'')
+                    if is_real_product_image(img):
+                        return img
         return ""
     except Exception:
         return ""
@@ -80,8 +156,6 @@ class PriceResult(BaseModel):
     best_price_chf: float
     best_url: str
     best_store: str
-    avg_price_chf: float
-    image_url: str = Field(default="")
 
 
 def get_client() -> anthropic.Anthropic:
@@ -98,7 +172,7 @@ def get_client() -> anthropic.Anthropic:
 def lookup_item(client: anthropic.Anthropic, name: str) -> PriceResult:
     response = client.messages.parse(
         model=MODEL,
-        max_tokens=4096,
+        max_tokens=8192,
         system=[
             {
                 "type": "text",
@@ -108,7 +182,6 @@ def lookup_item(client: anthropic.Anthropic, name: str) -> PriceResult:
         ],
         tools=[
             {"type": "web_search_20260209", "name": "web_search", "allowed_callers": ["direct"]},
-            {"type": "web_fetch_20260209", "name": "web_fetch", "allowed_callers": ["direct"]},
         ],
         output_format=PriceResult,
         messages=[
@@ -118,6 +191,8 @@ def lookup_item(client: anthropic.Anthropic, name: str) -> PriceResult:
             }
         ],
     )
+    if response.parsed_output is None:
+        raise RuntimeError(f"no parsed output (stop_reason={response.stop_reason})")
     return response.parsed_output
 
 
@@ -148,17 +223,21 @@ def main() -> int:
         item["best_price_chf"] = result.best_price_chf
         item["best_url"] = result.best_url.strip()
         item["best_store"] = result.best_store
-        item["avg_price_chf"] = result.avg_price_chf
         item["last_checked"] = today
         item.pop("notes", None)
-        # Prefer Claude's web_fetch-derived og:image; fall back to our own scrape if it failed
-        img = result.image_url.strip() or fetch_image_url(result.best_url)
+        item.pop("avg_price_chf", None)
+        img = fetch_image_url(item["best_url"], name)
+        img_source = "scrape"
+        if not img:
+            img = claude_image_lookup(client, name, item["best_url"])
+            img_source = "claude"
         if img:
             item["image_url"] = img
         else:
             item.pop("image_url", None)
+            img_source = "none"
         updated += 1
-        print(f"    {result.best_store}: CHF {result.best_price_chf:.2f} (avg {result.avg_price_chf:.2f}){' [img]' if img else ' [no img]'}")
+        print(f"    {result.best_store}: CHF {result.best_price_chf:.2f} [img: {img_source}]")
 
     data["last_updated"] = today
     with open(ITEMS_FILE, "w") as f:

@@ -12,6 +12,16 @@
     <p class="sub">Gift ideas — prices in CHF, refreshed weekly.</p>
   </header>
 
+  <div class="controls">
+    <label for="sort">Sort by</label>
+    <select id="sort">
+      <option value="default">Default order</option>
+      <option value="price-asc">Price (low → high)</option>
+      <option value="price-desc">Price (high → low)</option>
+      <option value="name">Name (A → Z)</option>
+    </select>
+  </div>
+
   <main id="grid" class="grid" aria-busy="true">
     <p class="loading">Loading…</p>
   </main>
