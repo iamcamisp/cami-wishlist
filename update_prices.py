@@ -12,7 +12,8 @@ import re
 import sys
 from datetime import date
 from pathlib import Path
-from urllib.parse import urljoin
+from typing import Optional, Tuple
+from urllib.parse import urljoin, urlparse
 
 import anthropic
 import requests
@@ -49,6 +50,133 @@ BROWSER_HEADERS = {
 OG_RE = re.compile(r'<meta[^>]+property=["\']og:image["\'][^>]+content=["\']([^"\']+)["\']', re.IGNORECASE)
 OG_RE_ALT = re.compile(r'<meta[^>]+content=["\']([^"\']+)["\'][^>]+property=["\']og:image["\']', re.IGNORECASE)
 TWITTER_IMG_RE = re.compile(r'<meta[^>]+name=["\']twitter:image["\'][^>]+content=["\']([^"\']+)["\']', re.IGNORECASE)
+
+PRICE_PATTERNS = [
+    re.compile(r'"price"\s*:\s*"?(\d+(?:\.\d{1,2})?)"?'),
+    re.compile(r'itemprop=["\']price["\'][^>]*content=["\'](\d+(?:\.\d{1,2})?)["\']', re.IGNORECASE),
+    re.compile(r'content=["\'](\d+(?:\.\d{1,2})?)["\'][^>]*itemprop=["\']price["\']', re.IGNORECASE),
+    re.compile(r'property=["\']product:price:amount["\'][^>]*content=["\'](\d+(?:\.\d{1,2})?)["\']', re.IGNORECASE),
+]
+
+
+def _extract_prices(html: str):
+    prices = []
+    for pat in PRICE_PATTERNS:
+        for m in pat.finditer(html):
+            try:
+                p = float(m.group(1))
+                if 0 < p < 100_000:
+                    prices.append(p)
+            except ValueError:
+                pass
+    return prices
+
+
+def _fetch_rendered_html(url: str) -> str:
+    """Render the page in a headless browser to bypass scraper blocks. Slow (~3-5s)."""
+    sys.path.insert(0, "/Library/Python/3.9/lib/python/site-packages")
+    try:
+        from playwright.sync_api import sync_playwright
+    except ImportError:
+        return ""
+    try:
+        with sync_playwright() as p:
+            # --disable-http2: Galaxus/Digitec choke on HTTP/2 from headless Chrome (TLS fingerprint)
+            # --disable-blink-features=AutomationControlled: hide webdriver flag
+            browser = p.chromium.launch(
+                headless=True,
+                args=["--disable-http2", "--disable-blink-features=AutomationControlled"],
+            )
+            context = browser.new_context(
+                user_agent=BROWSER_HEADERS["User-Agent"],
+                viewport={"width": 1280, "height": 800},
+                locale="en-US",
+            )
+            page = context.new_page()
+            page.goto(url, wait_until="domcontentloaded", timeout=25000)
+            try:
+                page.wait_for_load_state("networkidle", timeout=6000)
+            except Exception:
+                pass
+            html = page.content()
+            browser.close()
+            return html
+    except Exception as e:
+        print(f"    playwright failed: {e}")
+        return ""
+
+
+def _claude_price_lookup(client: anthropic.Anthropic, page_url: str) -> Optional[float]:
+    """Last resort: use Claude's web_fetch (bypasses retailer scraper blocks) to read the live price."""
+    host = urlparse(page_url).netloc
+    try:
+        response = client.messages.create(
+            model=MODEL,
+            max_tokens=256,
+            tools=[
+                {
+                    "type": "web_fetch_20260209",
+                    "name": "web_fetch",
+                    "allowed_callers": ["direct"],
+                    "allowed_domains": [host],
+                },
+            ],
+            messages=[
+                {
+                    "role": "user",
+                    "content": (
+                        f"Use web_fetch on this product page: {page_url}\n\n"
+                        f"Read the current price in CHF. Reply with ONLY the number — no currency symbol, "
+                        f"no prose, no markdown. Example: 294.00. If you cannot find a price, reply NONE."
+                    ),
+                }
+            ],
+        )
+        for block in response.content:
+            if block.type == "text":
+                text = block.text.strip()
+                m = re.search(r'(\d+(?:\.\d{1,2})?)', text)
+                if m:
+                    return float(m.group(1))
+        return None
+    except Exception:
+        return None
+
+
+def verify_price(page_url: str, candidate_price: float, client: Optional[anthropic.Anthropic] = None,
+                 tolerance: float = 0.30) -> Tuple[float, str]:
+    """Verify price via direct GET → headless browser → Claude web_fetch (if client given).
+    Returns (price, source): 'verified' / 'verified-rendered' / 'verified-claude' / 'claude'."""
+    html = ""
+    source_if_found = "verified"
+    try:
+        r = requests.get(page_url, headers=BROWSER_HEADERS, timeout=12, allow_redirects=True)
+        if r.status_code == 200 and r.text:
+            html = r.text
+    except Exception:
+        pass
+
+    prices = _extract_prices(html) if html else []
+    if not prices:
+        html = _fetch_rendered_html(page_url)
+        prices = _extract_prices(html) if html else []
+        if prices:
+            source_if_found = "verified-rendered"
+
+    if prices:
+        in_range = [p for p in prices if abs(p - candidate_price) / candidate_price <= tolerance]
+        if in_range:
+            from collections import Counter
+            best = Counter(in_range).most_common(1)[0][0]
+            return best, source_if_found
+
+    # Final fallback: ask Claude (skip if no client provided to avoid unwanted API calls)
+    if client is not None:
+        claude_price = _claude_price_lookup(client, page_url)
+        if claude_price and abs(claude_price - candidate_price) / candidate_price <= tolerance:
+            return claude_price, "verified-claude"
+
+    return candidate_price, "claude"
 
 
 JUNK_IMG_HINTS = ("favicon", "logo", "sprite", "placeholder", "default")
@@ -118,12 +246,18 @@ def fetch_image_url(page_url: str, item_name: str) -> str:
 
 def claude_image_lookup(client: anthropic.Anthropic, item_name: str, page_url: str) -> str:
     """Use Claude's web_fetch to get og:image from a page Python can't access."""
+    host = urlparse(page_url).netloc
     try:
         response = client.messages.create(
             model=MODEL,
             max_tokens=512,
             tools=[
-                {"type": "web_fetch_20260209", "name": "web_fetch", "allowed_callers": ["direct"]},
+                {
+                    "type": "web_fetch_20260209",
+                    "name": "web_fetch",
+                    "allowed_callers": ["direct"],
+                    "allowed_domains": [host],
+                },
             ],
             messages=[
                 {
@@ -223,12 +357,15 @@ def main() -> int:
             failed += 1
             continue
 
-        item["best_price_chf"] = result.best_price_chf
+        verified_price, price_source = verify_price(result.best_url.strip(), result.best_price_chf, client=client)
+        item["best_price_chf"] = verified_price
         item["best_url"] = result.best_url.strip()
         item["best_store"] = result.best_store
         item["last_checked"] = today
         item.pop("notes", None)
         item.pop("avg_price_chf", None)
+        if verified_price != result.best_price_chf:
+            print(f"    verified price: CHF {verified_price:.2f} (claude said {result.best_price_chf:.2f})")
         # Image: only look up if we don't already have one — first image stays
         if item.get("image_url"):
             img_source = "kept"
