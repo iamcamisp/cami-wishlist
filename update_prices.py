@@ -18,7 +18,7 @@ from pydantic import BaseModel, Field
 ROOT = Path(__file__).parent
 ITEMS_FILE = ROOT / "items.json"
 CREDS_FILE = Path.home() / ".claude" / ".credentials.json"
-MODEL = "claude-opus-4-7"
+MODEL = "claude-haiku-4-5"
 
 SYSTEM_PROMPT = """You are a price-research assistant for a wishlist hosted in Zurich, Switzerland.
 
@@ -50,7 +50,11 @@ def get_client() -> anthropic.Anthropic:
     with open(CREDS_FILE) as f:
         creds = json.load(f)
     token = creds["claudeAiOauth"]["accessToken"]
-    return anthropic.Anthropic(api_key=token)
+    # OAuth token → Bearer auth, not x-api-key
+    return anthropic.Anthropic(
+        auth_token=token,
+        default_headers={"anthropic-beta": "oauth-2025-04-20"},
+    )
 
 
 def lookup_item(client: anthropic.Anthropic, name: str) -> PriceResult:
@@ -65,8 +69,8 @@ def lookup_item(client: anthropic.Anthropic, name: str) -> PriceResult:
             }
         ],
         tools=[
-            {"type": "web_search_20260209", "name": "web_search"},
-            {"type": "web_fetch_20260209", "name": "web_fetch"},
+            {"type": "web_search_20260209", "name": "web_search", "allowed_callers": ["direct"]},
+            {"type": "web_fetch_20260209", "name": "web_fetch", "allowed_callers": ["direct"]},
         ],
         output_format=PriceResult,
         messages=[

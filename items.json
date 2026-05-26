@@ -1,6 +1,52 @@
 {
   "owner": "Cami",
   "currency": "CHF",
-  "last_updated": null,
-  "items": []
+  "last_updated": "2026-05-26",
+  "items": [
+    {
+      "name": "Shokz OpenRun Pro 2 Mini",
+      "notes": "Price range 136.75–167 CHF across Swiss retailers; availability varies by color",
+      "best_price_chf": 136.75,
+      "best_url": "https://www.toppreise.ch/productcollection/OpenRun_Pro_2_Mini-pc-s79092",
+      "best_store": "Various retailers via Toppreise comparison",
+      "avg_price_chf": 160.0,
+      "last_checked": "2026-05-26"
+    },
+    {
+      "name": "Dyson Supersonic hairdryer",
+      "best_price_chf": 425.0,
+      "best_url": "https://www.galaxus.ch/en/s6/product/dyson-supersonic-hairdryers-6293859",
+      "best_store": "Galaxus",
+      "avg_price_chf": 439.0,
+      "last_checked": "2026-05-26",
+      "notes": "Multiple variants available; check current color/model availability on retailer sites"
+    },
+    {
+      "name": "Massage voucher (Zurich)",
+      "notes": "45-min voucher at 118 CHF; 60-min at 149 CHF. Valid 5 years.",
+      "best_price_chf": 118.0,
+      "best_url": "https://origin-massage.ch/en/coupons/zurich",
+      "best_store": "Origin Massage",
+      "avg_price_chf": 150.0,
+      "last_checked": "2026-05-26"
+    },
+    {
+      "name": "Facial voucher (Zurich)",
+      "notes": "Value ranges from CHF 50–350+ depending on store & treatment type",
+      "best_price_chf": 50.0,
+      "best_url": "https://e-surprise.ch/en/gift-vouchers/c/-4287575",
+      "best_store": "e-surprise",
+      "avg_price_chf": 135.0,
+      "last_checked": "2026-05-26"
+    },
+    {
+      "name": "Sonos Sub Mini (black)",
+      "best_price_chf": 317.0,
+      "best_url": "https://www.toppreise.ch/preisvergleich/Subwoofer/SONOS-Sub-Mini-Schwarz-SUBM1EU1BLK-p704625",
+      "best_store": "Toppreise.ch (price comparison - retailers listed)",
+      "avg_price_chf": 445.0,
+      "last_checked": "2026-05-26",
+      "notes": "Swiss retailers found. Toppreise.ch lists 12 offers from CHF 317–449. Best retailer direct check needed."
+    }
+  ]
 }
