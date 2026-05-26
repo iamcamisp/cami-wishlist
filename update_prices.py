@@ -232,26 +232,56 @@ def bing_image_search(query: str) -> str:
 
 
 def fetch_image_url(page_url: str, item_name: str, client=None) -> str:
-    """Try og:image from retailer page → Toppreise via Claude web_search → Google CSE."""
+    """og:image from retailer → Toppreise → Geizhals → Wikipedia → Google CSE."""
     img = og_image_from_page(page_url)
     if img:
         return img
-    # Fallback: ask Claude to find a Toppreise.ch product URL for this item, then scrape og:image
     if client is not None:
-        toppreise_url = _find_toppreise_url(client, item_name)
-        if toppreise_url:
-            img = og_image_from_page(toppreise_url)
+        # Toppreise.ch (Swiss comparison; mostly electronics)
+        url = _find_comparison_url(client, item_name, "toppreise.ch", r'-p\d+')
+        if url:
+            img = og_image_from_page(url)
             if img and "imgsrv.toppreise.ch" in img:
                 return img
-    # Fallback: Google Custom Search (if configured)
+        # Geizhals.de (German/Austrian comparison; broader product range)
+        url = _find_comparison_url(client, item_name, "geizhals.de", r'-a\d+\.html')
+        if url:
+            img = og_image_from_page(url)
+            if img and "gzhls.at" in img:
+                return img
+    # Wikipedia (well for music, books, known products)
+    img = wikipedia_image(item_name)
+    if img:
+        return img
     img = google_image_search(item_name)
     if img:
         return img
     return ""
 
 
-def _find_toppreise_url(client: anthropic.Anthropic, item_name: str) -> str:
-    """Use Claude's web_search to find a Toppreise.ch product page URL for this item."""
+def wikipedia_image(item_name: str) -> str:
+    """Look up an image on Wikipedia via the REST summary API. Returns '' if no page or no image."""
+    from urllib.parse import quote
+    # Strip parenthetical/bracketed/em-dash suffixes for a cleaner Wikipedia title
+    clean = re.sub(r"\s*[—–\-\(\[].*", "", item_name).strip()
+    if not clean:
+        return ""
+    try:
+        r = requests.get(
+            f"https://en.wikipedia.org/api/rest_v1/page/summary/{quote(clean)}",
+            headers={"User-Agent": "CamisWishlist/1.0"},
+            timeout=8,
+        )
+        if r.status_code != 200:
+            return ""
+        d = r.json()
+        return (d.get("originalimage") or {}).get("source") or (d.get("thumbnail") or {}).get("source") or ""
+    except Exception:
+        return ""
+
+
+def _find_comparison_url(client: anthropic.Anthropic, item_name: str, site: str, slug_re: str) -> str:
+    """Use Claude's web_search to find a product page URL on a given comparison site."""
     try:
         response = client.messages.create(
             model=MODEL,
@@ -260,15 +290,17 @@ def _find_toppreise_url(client: anthropic.Anthropic, item_name: str) -> str:
             messages=[{
                 "role": "user",
                 "content": (
-                    f"Search the web for: site:toppreise.ch {item_name}\n\n"
-                    f"Reply with ONLY the URL of the first Toppreise.ch product page result "
-                    f"(must end with -p<number>). No prose. If no match, reply NONE."
+                    f"Search the web for: site:{site} {item_name}\n\n"
+                    f"Reply with ONLY the URL of the first {site} product page result. No prose. "
+                    f"If no match, reply NONE."
                 ),
             }],
         )
+        host_pat = re.escape(site)
+        url_re = re.compile(rf'https?://(?:www\.)?{host_pat}/[^\s]+{slug_re}')
         for block in response.content:
             if block.type == "text":
-                m = re.search(r'https?://(?:www\.)?toppreise\.ch/[^\s]+-p\d+', block.text)
+                m = url_re.search(block.text)
                 if m:
                     return m.group(0)
         return ""

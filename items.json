@@ -65,14 +65,16 @@
       "best_price_chf": 34.99,
       "best_url": "https://www.amazon.de/gp/product/B0BGJSQVQX",
       "best_store": "Amazon.de",
-      "last_checked": "2026-05-26"
+      "last_checked": "2026-05-26",
+      "image_url": "https://upload.wikimedia.org/wikipedia/en/2/2d/After_the_Gold_Rush.jpg"
     },
     {
       "name": "Getz/Gilberto — Back to Black Limited Edition (Vinyl LP)",
       "best_price_chf": 29.0,
       "best_url": "https://www.amazon.de/Getz-Gilberto-Black-Limited-Vinyl/dp/B00N29D81Y",
       "best_store": "Amazon.de",
-      "last_checked": "2026-05-26"
+      "last_checked": "2026-05-26",
+      "image_url": "https://upload.wikimedia.org/wikipedia/en/9/96/Getz-gilberto.jpg"
     }
   ]
 }
