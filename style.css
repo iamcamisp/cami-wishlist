@@ -1,0 +1,141 @@
+:root {
+  --bg: #faf8f5;
+  --card: #ffffff;
+  --ink: #1d1d1f;
+  --muted: #6b6b70;
+  --accent: #c9786b;
+  --accent-ink: #ffffff;
+  --border: #ebe7e0;
+  --shadow: 0 1px 2px rgba(0,0,0,0.04), 0 6px 16px rgba(0,0,0,0.05);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+header {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 56px 24px 24px;
+  text-align: center;
+}
+
+header h1 {
+  margin: 0 0 8px;
+  font-size: 2.25rem;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+}
+
+header .sub {
+  margin: 0;
+  color: var(--muted);
+  font-size: 1rem;
+}
+
+main.grid {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 24px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: var(--shadow);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05), 0 10px 24px rgba(0,0,0,0.07);
+}
+
+.card .name {
+  font-weight: 600;
+  font-size: 1.05rem;
+  line-height: 1.3;
+}
+
+.card .notes {
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.card .prices {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: auto;
+}
+
+.card .best {
+  font-size: 1.35rem;
+  font-weight: 600;
+}
+
+.card .avg {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.card .store {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.card a.button {
+  margin-top: 4px;
+  display: inline-block;
+  text-align: center;
+  background: var(--accent);
+  color: var(--accent-ink);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.92rem;
+  padding: 10px 14px;
+  border-radius: 10px;
+}
+
+.card a.button:hover { filter: brightness(0.95); }
+
+.loading {
+  grid-column: 1 / -1;
+  color: var(--muted);
+  text-align: center;
+  padding: 24px;
+}
+
+footer {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 32px 24px 56px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+@media (max-width: 480px) {
+  header { padding-top: 32px; }
+  header h1 { font-size: 1.75rem; }
+  main.grid { padding: 16px; gap: 12px; }
+  .card { padding: 16px; }
+}
