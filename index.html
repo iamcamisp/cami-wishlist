@@ -4,21 +4,25 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Cami's Wishlist</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <header>
-    <h1>Cami's Wishlist</h1>
+    <p class="kicker">A wishlist · Curated by Cami</p>
+    <h1>Things I'd love to receive.</h1>
     <p class="sub">Updated weekly with the best deals.</p>
   </header>
 
   <div class="controls">
-    <label for="sort">Sort by</label>
+    <label for="sort">Sort</label>
     <select id="sort">
-      <option value="price-asc" selected>Price (low → high)</option>
-      <option value="price-desc">Price (high → low)</option>
-      <option value="name">Name (A → Z)</option>
-      <option value="default">Default order</option>
+      <option value="price-asc" selected>Price ↑</option>
+      <option value="price-desc">Price ↓</option>
+      <option value="name">Name</option>
+      <option value="default">Default</option>
     </select>
   </div>
 

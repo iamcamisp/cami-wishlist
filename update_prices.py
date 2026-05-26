@@ -249,7 +249,7 @@ def wikipedia_image(item_name: str) -> str:
         return ""
 
 
-def _find_comparison_url(client: anthropic.Anthropic, item_name: str, site: str, slug_re: str) -> str:
+def _find_comparison_url(client: anthropic.Anthropic, item_name: str, site: str, slug_re: str) -> str:  # noqa: keep generic for easy re-add of other sites
     """Use Claude's web_search to find a product page URL on a given comparison site."""
     try:
         response = client.messages.create(
