@@ -180,6 +180,7 @@ def verify_price(page_url: str, candidate_price: float, client: Optional[anthrop
 
 
 JUNK_IMG_HINTS = ("favicon", "logo", "sprite", "placeholder", "default")
+# Image fallback chain: retailer og:image → Toppreise.ch → Wikipedia → Claude web_fetch
 
 
 def is_real_product_image(img_url: str) -> bool:
@@ -208,52 +209,20 @@ def og_image_from_page(page_url: str) -> str:
         return ""
 
 
-BING_MURL_RE = re.compile(r'"murl":"([^"]+)"')
-
-
-def bing_image_search(query: str) -> str:
-    """Fall back to Bing image search for a product image. Returns '' on failure."""
-    try:
-        r = requests.get(
-            "https://www.bing.com/images/search",
-            params={"q": query, "form": "HDRSC2", "first": "1"},
-            headers=BROWSER_HEADERS,
-            timeout=10,
-        )
-        if r.status_code != 200:
-            return ""
-        for m in BING_MURL_RE.finditer(r.text):
-            img = m.group(1).replace("\\", "")
-            if img.startswith("http") and not img.endswith(".svg"):
-                return img
-        return ""
-    except Exception:
-        return ""
-
-
 def fetch_image_url(page_url: str, item_name: str, client=None) -> str:
-    """og:image from retailer → Toppreise → Geizhals → Wikipedia → Google CSE."""
+    """Image fallback chain: retailer og:image → Toppreise.ch → Wikipedia.
+
+    `claude_image_lookup` runs as a final tier from the caller if this returns ''."""
     img = og_image_from_page(page_url)
     if img:
         return img
     if client is not None:
-        # Toppreise.ch (Swiss comparison; mostly electronics)
         url = _find_comparison_url(client, item_name, "toppreise.ch", r'-p\d+')
         if url:
             img = og_image_from_page(url)
             if img and "imgsrv.toppreise.ch" in img:
                 return img
-        # Geizhals.de (German/Austrian comparison; broader product range)
-        url = _find_comparison_url(client, item_name, "geizhals.de", r'-a\d+\.html')
-        if url:
-            img = og_image_from_page(url)
-            if img and "gzhls.at" in img:
-                return img
-    # Wikipedia (well for music, books, known products)
     img = wikipedia_image(item_name)
-    if img:
-        return img
-    img = google_image_search(item_name)
     if img:
         return img
     return ""
@@ -369,46 +338,6 @@ def get_client() -> anthropic.Anthropic:
         auth_token=token,
         default_headers={"anthropic-beta": "oauth-2025-04-20"},
     )
-
-
-def _google_cse_config():
-    """Return (api_key, cx) tuple if Google Custom Search is configured, else (None, None)."""
-    try:
-        creds = _load_creds()
-        cfg = creds.get("googleCustomSearch", {})
-        return cfg.get("apiKey"), cfg.get("searchEngineId")
-    except Exception:
-        return None, None
-
-
-def google_image_search(query: str) -> str:
-    """Search Google Custom Search for an image URL. Returns '' if not configured or no result."""
-    api_key, cx = _google_cse_config()
-    if not (api_key and cx):
-        return ""
-    try:
-        r = requests.get(
-            "https://www.googleapis.com/customsearch/v1",
-            params={
-                "key": api_key,
-                "cx": cx,
-                "q": query,
-                "searchType": "image",
-                "num": 5,
-                "safe": "active",
-                "imgType": "photo",
-            },
-            timeout=10,
-        )
-        if r.status_code != 200:
-            return ""
-        for hit in r.json().get("items", []):
-            link = hit.get("link", "")
-            if link.startswith("http") and not link.endswith(".svg") and is_real_product_image(link):
-                return link
-        return ""
-    except Exception:
-        return ""
 
 
 def lookup_item(client: anthropic.Anthropic, name: str) -> PriceResult:
