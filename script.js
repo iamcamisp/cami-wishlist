@@ -37,11 +37,13 @@ function render(data, grid, meta) {
         const avg = it.avg_price_chf != null ? `avg ${fmtCHF(it.avg_price_chf)}` : "";
         const store = it.best_store ? `at ${escape(it.best_store)}` : "";
         const url = it.best_url || "#";
-        const notes = it.notes ? `<div class="notes">${escape(it.notes)}</div>` : "";
+        const image = it.image_url
+          ? `<div class="image"><img src="${escapeAttr(it.image_url)}" alt="${escapeAttr(it.name)}" loading="lazy" onerror="this.parentElement.classList.add('broken')"/></div>`
+          : `<div class="image broken"></div>`;
         return `
           <article class="card">
+            ${image}
             <div class="name">${escape(it.name)}</div>
-            ${notes}
             <div class="prices">
               <span class="best">${best}</span>
               <span class="avg">${avg}</span>

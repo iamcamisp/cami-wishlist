@@ -8,11 +8,14 @@ melectronics, etc.) and updates the file in place. Then `git commit && git push`
 
 import json
 import os
+import re
 import sys
 from datetime import date
 from pathlib import Path
+from urllib.parse import urljoin
 
 import anthropic
+import requests
 from pydantic import BaseModel, Field
 
 ROOT = Path(__file__).parent
@@ -26,15 +29,50 @@ For each item the user names, search the web to find the current cheapest price 
 
 For each item, also estimate the typical "average" market price in CHF across reputable Swiss retailers (median of 3-5 listings is fine).
 
-Use the web_search tool. Do 3-6 searches per item. Then return a single JSON object with these fields exactly:
+Use the web_search tool to find listings (3-6 searches). Then use the web_fetch tool to open the cheapest retailer's product page and extract the `og:image` meta tag content — that is the product image URL.
+
+Return a single JSON object with these fields exactly:
 - name: the item name (echo back)
 - best_price_chf: number, cheapest in-stock CHF price you found
-- best_url: direct URL to that listing
+- best_url: direct URL to that listing (a real product page on the retailer's site, NOT a search/comparison page when possible)
 - best_store: retailer name (e.g. "Galaxus")
 - avg_price_chf: number, typical CHF price across reputable listings
-- notes: optional one-line note (max 80 chars) — e.g. "limited stock" or "discontinued, only used available"
+- image_url: the `og:image` URL from the product page (use web_fetch to read the page HTML and find the `<meta property="og:image" content="...">` tag — return the exact content URL). If the page has no og:image, return an empty string.
 
-Be honest: if you cannot find a Swiss retailer carrying the item, say so in notes and use the best EU-shippable listing you found."""
+If you cannot find a Swiss retailer carrying the item, use the best EU-shippable listing you found."""
+
+BROWSER_HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+    "Accept-Language": "en-US,en;q=0.9,de;q=0.8",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Sec-Fetch-Dest": "document",
+    "Sec-Fetch-Mode": "navigate",
+    "Sec-Fetch-Site": "none",
+}
+OG_RE = re.compile(r'<meta[^>]+property=["\']og:image["\'][^>]+content=["\']([^"\']+)["\']', re.IGNORECASE)
+OG_RE_ALT = re.compile(r'<meta[^>]+content=["\']([^"\']+)["\'][^>]+property=["\']og:image["\']', re.IGNORECASE)
+TWITTER_IMG_RE = re.compile(r'<meta[^>]+name=["\']twitter:image["\'][^>]+content=["\']([^"\']+)["\']', re.IGNORECASE)
+
+
+def fetch_image_url(page_url: str) -> str:
+    """Fetch the product page and extract og:image (or twitter:image). Returns '' on failure."""
+    try:
+        r = requests.get(page_url, headers=BROWSER_HEADERS, timeout=12, allow_redirects=True)
+        if r.status_code != 200 or not r.text:
+            return ""
+        for pattern in (OG_RE, OG_RE_ALT, TWITTER_IMG_RE):
+            m = pattern.search(r.text)
+            if m:
+                img = m.group(1).strip()
+                if img.startswith("//"):
+                    img = "https:" + img
+                elif img.startswith("/"):
+                    img = urljoin(page_url, img)
+                return img
+        return ""
+    except Exception:
+        return ""
 
 
 class PriceResult(BaseModel):
@@ -43,7 +81,7 @@ class PriceResult(BaseModel):
     best_url: str
     best_store: str
     avg_price_chf: float
-    notes: str = Field(default="")
+    image_url: str = Field(default="")
 
 
 def get_client() -> anthropic.Anthropic:
@@ -108,14 +146,19 @@ def main() -> int:
             continue
 
         item["best_price_chf"] = result.best_price_chf
-        item["best_url"] = result.best_url
+        item["best_url"] = result.best_url.strip()
         item["best_store"] = result.best_store
         item["avg_price_chf"] = result.avg_price_chf
         item["last_checked"] = today
-        if result.notes:
-            item["notes"] = result.notes
+        item.pop("notes", None)
+        # Prefer Claude's web_fetch-derived og:image; fall back to our own scrape if it failed
+        img = result.image_url.strip() or fetch_image_url(result.best_url)
+        if img:
+            item["image_url"] = img
+        else:
+            item.pop("image_url", None)
         updated += 1
-        print(f"    {result.best_store}: CHF {result.best_price_chf:.2f} (avg {result.avg_price_chf:.2f})")
+        print(f"    {result.best_store}: CHF {result.best_price_chf:.2f} (avg {result.avg_price_chf:.2f}){' [img]' if img else ' [no img]'}")
 
     data["last_updated"] = today
     with open(ITEMS_FILE, "w") as f:
