@@ -231,17 +231,49 @@ def bing_image_search(query: str) -> str:
         return ""
 
 
-def fetch_image_url(page_url: str, item_name: str) -> str:
-    """Try og:image from retailer page → og:image from Toppreise search."""
+def fetch_image_url(page_url: str, item_name: str, client=None) -> str:
+    """Try og:image from retailer page → Toppreise via Claude web_search → Google CSE."""
     img = og_image_from_page(page_url)
     if img:
         return img
-    # Fallback: Toppreise.ch search page (almost always has og:image, isn't blocked)
-    toppreise_url = "https://www.toppreise.ch/index.php?o=2&search_query=" + requests.utils.quote(item_name)
-    img = og_image_from_page(toppreise_url)
-    if img and "imgsrv.toppreise.ch" in img:
+    # Fallback: ask Claude to find a Toppreise.ch product URL for this item, then scrape og:image
+    if client is not None:
+        toppreise_url = _find_toppreise_url(client, item_name)
+        if toppreise_url:
+            img = og_image_from_page(toppreise_url)
+            if img and "imgsrv.toppreise.ch" in img:
+                return img
+    # Fallback: Google Custom Search (if configured)
+    img = google_image_search(item_name)
+    if img:
         return img
     return ""
+
+
+def _find_toppreise_url(client: anthropic.Anthropic, item_name: str) -> str:
+    """Use Claude's web_search to find a Toppreise.ch product page URL for this item."""
+    try:
+        response = client.messages.create(
+            model=MODEL,
+            max_tokens=256,
+            tools=[{"type": "web_search_20260209", "name": "web_search", "allowed_callers": ["direct"]}],
+            messages=[{
+                "role": "user",
+                "content": (
+                    f"Search the web for: site:toppreise.ch {item_name}\n\n"
+                    f"Reply with ONLY the URL of the first Toppreise.ch product page result "
+                    f"(must end with -p<number>). No prose. If no match, reply NONE."
+                ),
+            }],
+        )
+        for block in response.content:
+            if block.type == "text":
+                m = re.search(r'https?://(?:www\.)?toppreise\.ch/[^\s]+-p\d+', block.text)
+                if m:
+                    return m.group(0)
+        return ""
+    except Exception:
+        return ""
 
 
 def claude_image_lookup(client: anthropic.Anthropic, item_name: str, page_url: str) -> str:
@@ -292,15 +324,59 @@ class PriceResult(BaseModel):
     best_store: str
 
 
-def get_client() -> anthropic.Anthropic:
+def _load_creds() -> dict:
     with open(CREDS_FILE) as f:
-        creds = json.load(f)
+        return json.load(f)
+
+
+def get_client() -> anthropic.Anthropic:
+    creds = _load_creds()
     token = creds["claudeAiOauth"]["accessToken"]
     # OAuth token → Bearer auth, not x-api-key
     return anthropic.Anthropic(
         auth_token=token,
         default_headers={"anthropic-beta": "oauth-2025-04-20"},
     )
+
+
+def _google_cse_config():
+    """Return (api_key, cx) tuple if Google Custom Search is configured, else (None, None)."""
+    try:
+        creds = _load_creds()
+        cfg = creds.get("googleCustomSearch", {})
+        return cfg.get("apiKey"), cfg.get("searchEngineId")
+    except Exception:
+        return None, None
+
+
+def google_image_search(query: str) -> str:
+    """Search Google Custom Search for an image URL. Returns '' if not configured or no result."""
+    api_key, cx = _google_cse_config()
+    if not (api_key and cx):
+        return ""
+    try:
+        r = requests.get(
+            "https://www.googleapis.com/customsearch/v1",
+            params={
+                "key": api_key,
+                "cx": cx,
+                "q": query,
+                "searchType": "image",
+                "num": 5,
+                "safe": "active",
+                "imgType": "photo",
+            },
+            timeout=10,
+        )
+        if r.status_code != 200:
+            return ""
+        for hit in r.json().get("items", []):
+            link = hit.get("link", "")
+            if link.startswith("http") and not link.endswith(".svg") and is_real_product_image(link):
+                return link
+        return ""
+    except Exception:
+        return ""
 
 
 def lookup_item(client: anthropic.Anthropic, name: str) -> PriceResult:
@@ -370,7 +446,7 @@ def main() -> int:
         if item.get("image_url"):
             img_source = "kept"
         else:
-            img = fetch_image_url(item["best_url"], name)
+            img = fetch_image_url(item["best_url"], name, client=client)
             img_source = "scrape"
             if not img:
                 img = claude_image_lookup(client, name, item["best_url"])
