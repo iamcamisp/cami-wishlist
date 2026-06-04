@@ -88,10 +88,11 @@
     {
       "name": "New Balance MR530 (grey/white, size 38)",
       "best_price_chf": 120.0,
-      "best_url": "https://www.zalando.ch/new-balance-mr530-sneaker-low-white-ne215o04g-a11.html",
-      "best_store": "Zalando",
+      "best_url": "https://www.google.com/search?q=New+Balance+MR530+grey+white",
+      "best_store": "Google",
       "last_checked": "2026-06-04",
-      "image_url": "https://img01.ztat.net/article/spp-media-p1/194c5f2249264083a51281ab12da3155/9ea44f3b41c749dbb8ac6497f10beede.jpg?imwidth=1800&filter=packshot"
+      "image_url": "https://img01.ztat.net/article/spp-media-p1/194c5f2249264083a51281ab12da3155/9ea44f3b41c749dbb8ac6497f10beede.jpg?imwidth=1800&filter=packshot",
+      "manual": true
     }
   ]
 }
