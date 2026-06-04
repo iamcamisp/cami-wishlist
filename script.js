@@ -58,7 +58,11 @@ function render() {
     .map((it) => {
       const best = it.best_price_chf != null ? fmtCHF(it.best_price_chf) : "—";
       const store = it.best_store ? `at ${escape(it.best_store)}` : "";
-      const url = it.best_url || "#";
+      // Price-searched (non-manual) items link to a Google search of the product;
+      // manual items (vouchers, specific shop pages) keep their direct link.
+      const url = it.manual && it.best_url
+        ? it.best_url
+        : `https://www.google.com/search?q=${encodeURIComponent(it.name)}`;
       const image = it.image_url
         ? `<div class="image"><img src="${escapeAttr(it.image_url)}" alt="${escapeAttr(it.name)}" loading="lazy" onerror="this.parentElement.classList.add('broken')"/></div>`
         : `<div class="image broken"></div>`;
