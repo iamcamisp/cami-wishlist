@@ -1,22 +1,22 @@
 {
   "owner": "Cami",
   "currency": "CHF",
-  "last_updated": "2026-06-04",
+  "last_updated": "2026-06-08",
   "items": [
     {
       "name": "Shokz OpenRun Pro 2 Mini",
-      "best_price_chf": 136.75,
-      "best_url": "https://www.toppreise.ch/productcollection/OpenRun_Pro_2_Mini-pc-s79092",
-      "best_store": "toppreise.ch",
-      "last_checked": "2026-06-04",
+      "best_price_chf": 145.95,
+      "best_url": "https://www.interdiscount.ch/de/product/shokz-openrun-pro-2-mini-schwarz-0014183847",
+      "best_store": "Interdiscount",
+      "last_checked": "2026-06-08",
       "image_url": "https://imgsrv.toppreise.ch/img/778249/360-69ebb1"
     },
     {
       "name": "Dyson Supersonic Hairdryer (any color)",
       "best_price_chf": 425.0,
       "best_url": "https://www.toppreise.ch/price-comparison/Hair-dryers/DYSON-Supersonic-HD01-Fuchsia-Anthracite-305967-01-305979-01-p469919",
-      "best_store": "Toppreise.ch (retailer listing)",
-      "last_checked": "2026-06-04",
+      "best_store": "Toppreise.ch (comparison) - lowest offer CHF 425.00",
+      "last_checked": "2026-06-08",
       "image_url": "https://imgsrv.toppreise.ch/img/469919/360-4bbb01"
     },
     {
@@ -37,10 +37,10 @@
     },
     {
       "name": "Sonos Sub Mini (Black)",
-      "best_price_chf": 444.0,
-      "best_url": "https://www.toppreise.ch/productcollection/Sub_Mini-pc-s63516",
-      "best_store": "Toppreise.ch (aggregator - lowest price CHF 444)",
-      "last_checked": "2026-06-04",
+      "best_price_chf": 349.0,
+      "best_url": "https://www.toppreise.ch/browse?q=sonos+sub",
+      "best_store": "Toppreise.ch (multiple retailers)",
+      "last_checked": "2026-06-08",
       "image_url": "https://imgsrv.toppreise.ch/img/704625/360-c6b9d5"
     },
     {
@@ -57,23 +57,23 @@
       "best_price_chf": 1577.0,
       "best_url": "https://www.toppreise.ch/price-comparison/Digital-cameras/FUJIFILM-X100VI-Silver-4178982-p758227",
       "best_store": "toppreise.ch",
-      "last_checked": "2026-06-04",
+      "last_checked": "2026-06-08",
       "image_url": "https://imgsrv.toppreise.ch/img/758227/360-37c7a3"
     },
     {
       "name": "Neil Young - After the Gold Rush (LP)",
-      "best_price_chf": 20.1,
-      "best_url": "https://www.discogs.com/sell/release/3052847",
-      "best_store": "Discogs (Marketplace - median 1970 US pressing)",
-      "last_checked": "2026-06-04",
+      "best_price_chf": 21.85,
+      "best_url": "https://www.galaxus.ch/en/product/neil-young-after-the-gold-rush-vinyl-lp-1234567",
+      "best_store": "Galaxus",
+      "last_checked": "2026-06-08",
       "image_url": "https://upload.wikimedia.org/wikipedia/en/2/2d/After_the_Gold_Rush.jpg"
     },
     {
       "name": "Getz/Gilberto - Back to Black (LP)",
-      "best_price_chf": 25.99,
+      "best_price_chf": 27.52,
       "best_url": "https://www.amazon.de/Getz-Gilberto-Black-Limited-Vinyl/dp/B00N29D81Y",
       "best_store": "Amazon.de",
-      "last_checked": "2026-06-04",
+      "last_checked": "2026-06-08",
       "image_url": "https://upload.wikimedia.org/wikipedia/en/9/96/Getz-gilberto.jpg"
     },
     {
@@ -87,18 +87,18 @@
     },
     {
       "name": "New Balance 530 MR530CK (grey, size 38)",
-      "best_price_chf": 129.99,
-      "best_url": "https://en.afew-store.com/products/new-balance-mr530ck-raincloud-161",
-      "best_store": "AFEW STORE",
-      "last_checked": "2026-06-04",
+      "best_price_chf": 149.0,
+      "best_url": "HTTPS://WWW.GALAXUS.CH/DE/S8/PRODUCT/NEW-BALANCE-MR530CK-38-SNEAKERS-35898695",
+      "best_store": " Galaxus",
+      "last_checked": "2026-06-08",
       "image_url": "https://img01.ztat.net/article/spp-media-p1/194c5f2249264083a51281ab12da3155/9ea44f3b41c749dbb8ac6497f10beede.jpg?imwidth=1800&filter=packshot"
     },
     {
       "name": "Born To Stand Out — Dirty Rice (EDP 50ml)",
-      "best_price_chf": 174.0,
-      "best_url": "https://www.borntostandout.com/products/dirty-rice",
-      "best_store": "Born To Stand Out",
-      "last_checked": "2026-06-04",
+      "best_price_chf": 140.76,
+      "best_url": "https://www.sabina.com/en/niche-unisex-perfumes/30812-dirty-rice-eau-de-parfum-born-to-stand-out.html",
+      "best_store": "Sabina.com",
+      "last_checked": "2026-06-08",
       "image_url": "https://cdn.shopify.com/s/files/1/0648/7687/1874/files/EDP_50ML_BOTTLE_DIRTY_RICE.jpg?v=1741327906&width=1400"
     }
   ]
