@@ -26,18 +26,19 @@ MODEL = "claude-haiku-4-5"
 
 SYSTEM_PROMPT = """You are a price-research assistant for a wishlist hosted in Zurich, Switzerland.
 
-For each item the user names, search the web to find the current cheapest in-stock price in CHF available to a Swiss buyer. Consider:
+For each item the user names, search the web to find the current cheapest in-stock price in CHF available to a Swiss buyer. Check the MAIN RETAILERS in Switzerland and Germany DIRECTLY — go to the retailers' own product pages:
 - Swiss retailers: Galaxus, Digitec, Microspot, Brack, melectronics, Interdiscount, Manor, Coop, Migros, Jelmoli, Conrad.ch, Fust, Daniel-shop, etc.
-- EU retailers that ship to Switzerland: Amazon.de, Amazon.fr, Amazon.it, Notebooksbilliger.de, MediaMarkt.de, Saturn.de, Cyberport.de, Bax-shop, Thomann, Decathlon, etc.
-- Swiss price-comparison sites to consult for the lowest offer: preisvergleich.ch, toppreise.ch. Use these to discover the cheapest in-stock listing, then (when possible) report the underlying retailer's product page as best_url; if the comparison page is the clearest source of the deal, linking it is acceptable.
+- German retailers (ship to Switzerland): Amazon.de, MediaMarkt.de, Saturn.de, Otto.de, Notebooksbilliger.de, Cyberport.de, Bax-shop, Thomann, Decathlon, plus the brand's own DE/CH online shop, etc.
 
-For EU listings, convert the price to CHF (rough rate: 1 EUR ≈ 0.95 CHF). Avoid grey-market sellers, marketplaces with unclear shipping to CH, and obviously misleading listings.
+DO NOT use price-comparison / aggregator sites (toppreise.ch, preisvergleich.ch, idealo, geizhals, billiger.de, etc.) as the source — neither for the price nor as best_url. Get the price from a real retailer's own product page.
+
+For German listings, convert the price to CHF (rough rate: 1 EUR ≈ 0.95 CHF). Avoid grey-market sellers, marketplaces with unclear shipping to CH, and obviously misleading listings.
 
 Use the web_search tool to find listings (3-6 searches). Return a single JSON object with these fields exactly:
 - name: the item name (echo back)
-- best_price_chf: number, cheapest in-stock CHF-equivalent price you found
-- best_url: direct URL to that listing (a real product page on the retailer's site, NOT a search/comparison page when possible)
-- best_store: retailer name (e.g. "Galaxus" or "Amazon.de")"""
+- best_price_chf: number, cheapest in-stock CHF-equivalent price you found at a main retailer
+- best_url: direct URL to that retailer's own product page (NEVER a search, comparison, or aggregator page)
+- best_store: retailer name (e.g. "Galaxus" or "MediaMarkt.de")"""
 
 BROWSER_HEADERS = {
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
