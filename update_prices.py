@@ -396,6 +396,13 @@ def main() -> int:
             failed += 1
             continue
 
+        # Guard: if no valid retailer listing was found, KEEP the previous values
+        # (don't overwrite good data with an empty/zero result).
+        if not result.best_url.strip() or result.best_price_chf <= 0:
+            print(f"    no valid retailer listing found — keeping previous price")
+            failed += 1
+            continue
+
         verified_price, price_source = verify_price(result.best_url.strip(), result.best_price_chf, client=client)
         item["best_price_chf"] = verified_price
         item["best_url"] = result.best_url.strip()
