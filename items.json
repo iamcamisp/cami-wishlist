@@ -1,22 +1,22 @@
 {
   "owner": "Cami",
   "currency": "CHF",
-  "last_updated": "2026-06-09",
+  "last_updated": "2026-06-15",
   "items": [
     {
       "name": "Shokz OpenRun Pro 2 Mini",
       "best_price_chf": 119.0,
-      "best_url": "https://www.galaxus.ch/en/s1/product/shokz-openrun-pro-2-mini-no-noise-cancelling-12-h-wireless-headphones-47472492",
-      "best_store": "Galaxus",
-      "last_checked": "2026-06-09",
+      "best_url": "https://www.digitec.ch/en/s1/product/shokz-openrun-pro-2-mini-no-noise-cancelling-12-h-wireless-headphones-47472493",
+      "best_store": "Digitec",
+      "last_checked": "2026-06-15",
       "image_url": "https://imgsrv.toppreise.ch/img/778249/360-69ebb1"
     },
     {
       "name": "Dyson Supersonic Hairdryer (any color)",
-      "best_price_chf": 299.0,
-      "best_url": "https://www.galaxus.ch/en/s6/product/dyson-supersonic-gifting-edition-foehn-22848083",
-      "best_store": "Galaxus",
-      "last_checked": "2026-06-09",
+      "best_price_chf": 449.0,
+      "best_url": "https://www.haar-shop.ch/en/67465379-dyson-supersonic-haartrockner.html",
+      "best_store": "haar-shop.ch",
+      "last_checked": "2026-06-15",
       "image_url": "https://imgsrv.toppreise.ch/img/469919/360-4bbb01"
     },
     {
@@ -54,26 +54,26 @@
     },
     {
       "name": "Fujifilm X100VI (any color)",
-      "best_price_chf": 1709.05,
-      "best_url": "https://www.amazon.de/-/en/Fujifilm-74487-FUJIFILM-X100VI-Silver/dp/B0CV523K92",
-      "best_store": "Amazon.de",
-      "last_checked": "2026-06-09",
+      "best_price_chf": 1598.0,
+      "best_url": "https://www.brack.ch/fujifilm-fotokamera-x100vi-schwarz-1682952",
+      "best_store": "Brack",
+      "last_checked": "2026-06-15",
       "image_url": "https://imgsrv.toppreise.ch/img/758227/360-37c7a3"
     },
     {
       "name": "Neil Young - After the Gold Rush (LP)",
-      "best_price_chf": 27.95,
-      "best_url": "https://www.galaxus.ch/en/product/neil-young-after-the-gold-rush-11934076",
+      "best_price_chf": 29.99,
+      "best_url": "https://www.galaxus.ch/en/s1/product/neil-young-after-the-gold-rush-lp-vinyl-12893910",
       "best_store": "Galaxus",
-      "last_checked": "2026-06-09",
+      "last_checked": "2026-06-15",
       "image_url": "https://upload.wikimedia.org/wikipedia/en/2/2d/After_the_Gold_Rush.jpg"
     },
     {
       "name": "Getz/Gilberto - Back to Black (LP)",
-      "best_price_chf": 27.52,
-      "best_url": "https://www.amazon.de/Getz-Gilberto-Black-Limited-Vinyl/dp/B00N29D81Y",
+      "best_price_chf": 30.39,
+      "best_url": "https://www.amazon.de/-/en/Getz-Gilberto-Back-Black-Limited/dp/B00N29D81Y",
       "best_store": "Amazon.de",
-      "last_checked": "2026-06-08",
+      "last_checked": "2026-06-15",
       "image_url": "https://upload.wikimedia.org/wikipedia/en/9/96/Getz-gilberto.jpg"
     },
     {
@@ -87,18 +87,18 @@
     },
     {
       "name": "New Balance 530 MR530CK (grey, size 38)",
-      "best_price_chf": 99.5,
-      "best_url": "https://www.footkorner.com/en/products/paire-de-chaussures-new-balance-530-mr530ck-d",
-      "best_store": "Footkorner",
-      "last_checked": "2026-06-09",
+      "best_price_chf": 111.0,
+      "best_url": "https://www.footdistrict.com/en/new-balance-mr530-ck-mr530ck.html",
+      "best_store": "Footdistrict",
+      "last_checked": "2026-06-15",
       "image_url": "https://img01.ztat.net/article/spp-media-p1/194c5f2249264083a51281ab12da3155/9ea44f3b41c749dbb8ac6497f10beede.jpg?imwidth=1800&filter=packshot"
     },
     {
       "name": "Born To Stand Out — Dirty Rice (EDP 50ml)",
-      "best_price_chf": 140.76,
-      "best_url": "https://www.sabina.com/en/niche-unisex-perfumes/30812-dirty-rice-eau-de-parfum-born-to-stand-out.html",
-      "best_store": "Sabina.com",
-      "last_checked": "2026-06-08",
+      "best_price_chf": 220.0,
+      "best_url": "https://www.luckyscent.com/products/dirty-rice-by-borntostandout",
+      "best_store": "Luckyscent",
+      "last_checked": "2026-06-15",
       "image_url": "https://cdn.shopify.com/s/files/1/0648/7687/1874/files/EDP_50ML_BOTTLE_DIRTY_RICE.jpg?v=1741327906&width=1400"
     },
     {
@@ -108,6 +108,15 @@
       "best_store": "TWHEELS",
       "last_checked": "2026-06-09",
       "image_url": "https://cdn.shopify.com/s/files/1/0918/2743/7948/files/hantel-holz-stander-5538098.png?v=1756217007",
+      "manual": true
+    },
+    {
+      "name": "Atonemo NTS Radio Player",
+      "best_price_chf": 138.0,
+      "best_url": "https://shop.nts.live/products/atonemo-nts-radio-player",
+      "best_store": "NTS / Atonemo (€149)",
+      "last_checked": "2026-06-20",
+      "image_url": "https://cdn.shopify.com/s/files/1/0821/9525/1492/files/NTS.213_11390562-4f6f-48f4-96e2-3a415076c309.jpg?v=1781704626",
       "manual": true
     }
   ]
