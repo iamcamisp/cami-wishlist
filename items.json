@@ -1,7 +1,7 @@
 {
   "owner": "Cami",
   "currency": "CHF",
-  "last_updated": "2026-06-15",
+  "last_updated": "2026-06-26",
   "items": [
     {
       "name": "Shokz OpenRun Pro 2 Mini",
@@ -118,6 +118,14 @@
       "last_checked": "2026-06-20",
       "image_url": "https://cdn.shopify.com/s/files/1/0821/9525/1492/files/NTS.213_11390562-4f6f-48f4-96e2-3a415076c309.jpg?v=1781704626",
       "manual": true
+    },
+    {
+      "name": "The Correspondent — Virginia Evans (paperback)",
+      "best_price_chf": 19.9,
+      "best_url": "https://www.orellfuessli.ch/shop/home/artikeldetails/A1076590478",
+      "best_store": "Orell Füssli",
+      "last_checked": "2026-06-26",
+      "image_url": "https://images.thalia.media/-/BF2000-2000/b418dddc1c4248e08d10baccf7681fba/the-correspondent-taschenbuch-virginia-evans-englisch.jpeg"
     }
   ]
 }
