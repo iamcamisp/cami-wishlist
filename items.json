@@ -1,7 +1,7 @@
 {
   "owner": "Cami",
   "currency": "CHF",
-  "last_updated": "2026-06-26",
+  "last_updated": "2026-06-15",
   "items": [
     {
       "name": "Shokz OpenRun Pro 2 Mini",
@@ -117,15 +117,6 @@
       "best_store": "NTS / Atonemo (€149)",
       "last_checked": "2026-06-20",
       "image_url": "https://cdn.shopify.com/s/files/1/0821/9525/1492/files/NTS.213_11390562-4f6f-48f4-96e2-3a415076c309.jpg?v=1781704626",
-      "manual": true
-    },
-    {
-      "name": "Vestido Gola Tricô Balneário (Equipe Guria)",
-      "best_price_chf": 94.0,
-      "best_url": "https://www.guriainspira.com.br/produto/vestido-gola-trico-balneario-1966",
-      "best_store": "Guria Inspira (R$598)",
-      "last_checked": "2026-06-26",
-      "image_url": "https://cdn.vnda.com.br/guriainspira/2025/06/13/12_46_21_912_12_6_4_413_sem20ticc81tulo11.jpg?v=1752594323",
       "manual": true
     }
   ]
