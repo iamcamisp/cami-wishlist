@@ -1,22 +1,14 @@
 {
   "owner": "Cami",
   "currency": "CHF",
-  "last_updated": "2026-06-26",
+  "last_updated": "2026-07-06",
   "items": [
     {
-      "name": "Shokz OpenRun Pro 2 Mini",
-      "best_price_chf": 119.0,
-      "best_url": "https://www.digitec.ch/en/s1/product/shokz-openrun-pro-2-mini-no-noise-cancelling-12-h-wireless-headphones-47472493",
-      "best_store": "Digitec",
-      "last_checked": "2026-06-15",
-      "image_url": "https://imgsrv.toppreise.ch/img/778249/360-69ebb1"
-    },
-    {
       "name": "Dyson Supersonic Hairdryer (any color)",
-      "best_price_chf": 449.0,
-      "best_url": "https://www.haar-shop.ch/en/67465379-dyson-supersonic-haartrockner.html",
+      "best_price_chf": 323.1,
+      "best_url": "https://www.haar-shop.ch/en/brand/dyson/supersonic.html",
       "best_store": "haar-shop.ch",
-      "last_checked": "2026-06-15",
+      "last_checked": "2026-07-06",
       "image_url": "https://imgsrv.toppreise.ch/img/469919/360-4bbb01"
     },
     {
@@ -37,44 +29,27 @@
     },
     {
       "name": "Sonos Sub Mini (Black)",
-      "best_price_chf": 349.0,
-      "best_url": "https://www.galaxus.ch/en/s1/product/sonos-sub-mini-wi-fi-multiroom-systems-22142619",
+      "best_price_chf": 359.0,
+      "best_url": "https://www.galaxus.ch/de/s1/product/sonos-sub-mini-wlan-multiroom-system-22142620",
       "best_store": "Galaxus",
-      "last_checked": "2026-06-09",
+      "last_checked": "2026-06-29",
       "image_url": "https://imgsrv.toppreise.ch/img/704625/360-c6b9d5"
     },
     {
-      "name": "Le Tanneur Émilie (Small, Black)",
-      "best_price_chf": 395.0,
-      "best_url": "https://www.letanneur.com/fr-ch/products/petit-sac-a-main-emilie-en-cuir-graine-noir",
-      "best_store": "Le Tanneur",
-      "last_checked": "2026-05-26",
-      "image_url": "https://www.letanneur.com/cdn/shop/files/TEMI1606N01-1_4b6a04e0-7e51-40fe-9eb2-ad2a8c5f5c48.jpg?v=1723021237&width=2048",
-      "manual": true
-    },
-    {
       "name": "Fujifilm X100VI (any color)",
-      "best_price_chf": 1598.0,
-      "best_url": "https://www.brack.ch/fujifilm-fotokamera-x100vi-schwarz-1682952",
-      "best_store": "Brack",
-      "last_checked": "2026-06-15",
+      "best_price_chf": 1588.0,
+      "best_url": "https://www.galaxus.ch/en/s1/product/fujifilm-x100vi-23-mm-4020-mpx-aps-c-dx-cameras-42944935",
+      "best_store": "Galaxus",
+      "last_checked": "2026-06-29",
       "image_url": "https://imgsrv.toppreise.ch/img/758227/360-37c7a3"
     },
     {
       "name": "Neil Young - After the Gold Rush (LP)",
-      "best_price_chf": 29.99,
-      "best_url": "https://www.galaxus.ch/en/s1/product/neil-young-after-the-gold-rush-lp-vinyl-12893910",
-      "best_store": "Galaxus",
-      "last_checked": "2026-06-15",
-      "image_url": "https://upload.wikimedia.org/wikipedia/en/2/2d/After_the_Gold_Rush.jpg"
-    },
-    {
-      "name": "Getz/Gilberto - Back to Black (LP)",
-      "best_price_chf": 30.39,
-      "best_url": "https://www.amazon.de/-/en/Getz-Gilberto-Back-Black-Limited/dp/B00N29D81Y",
+      "best_price_chf": 47.29,
+      "best_url": "https://www.amazon.de/After-Gold-Rush-Rmst-Vinyl/dp/B002VRNIHM",
       "best_store": "Amazon.de",
-      "last_checked": "2026-06-15",
-      "image_url": "https://upload.wikimedia.org/wikipedia/en/9/96/Getz-gilberto.jpg"
+      "last_checked": "2026-07-06",
+      "image_url": "https://upload.wikimedia.org/wikipedia/en/2/2d/After_the_Gold_Rush.jpg"
     },
     {
       "name": "Zion Simple Soft Rounded earring (silver)",
@@ -87,19 +62,11 @@
     },
     {
       "name": "New Balance 530 MR530CK (grey, size 38)",
-      "best_price_chf": 111.0,
-      "best_url": "https://www.footdistrict.com/en/new-balance-mr530-ck-mr530ck.html",
-      "best_store": "Footdistrict",
-      "last_checked": "2026-06-15",
+      "best_price_chf": 93.75,
+      "best_url": "https://www.galaxus.ch/de/s8/product/new-balance-mr530ck-40-sneakers-35898695",
+      "best_store": "Galaxus",
+      "last_checked": "2026-06-29",
       "image_url": "https://img01.ztat.net/article/spp-media-p1/194c5f2249264083a51281ab12da3155/9ea44f3b41c749dbb8ac6497f10beede.jpg?imwidth=1800&filter=packshot"
-    },
-    {
-      "name": "Born To Stand Out — Dirty Rice (EDP 50ml)",
-      "best_price_chf": 220.0,
-      "best_url": "https://www.luckyscent.com/products/dirty-rice-by-borntostandout",
-      "best_store": "Luckyscent",
-      "last_checked": "2026-06-15",
-      "image_url": "https://cdn.shopify.com/s/files/1/0648/7687/1874/files/EDP_50ML_BOTTLE_DIRTY_RICE.jpg?v=1741327906&width=1400"
     },
     {
       "name": "TWHEELS Dumbbell with walnut wood stand (20 kg)",
@@ -109,23 +76,6 @@
       "last_checked": "2026-06-09",
       "image_url": "https://cdn.shopify.com/s/files/1/0918/2743/7948/files/hantel-holz-stander-5538098.png?v=1756217007",
       "manual": true
-    },
-    {
-      "name": "Atonemo NTS Radio Player",
-      "best_price_chf": 138.0,
-      "best_url": "https://shop.nts.live/products/atonemo-nts-radio-player",
-      "best_store": "NTS / Atonemo (€149)",
-      "last_checked": "2026-06-20",
-      "image_url": "https://cdn.shopify.com/s/files/1/0821/9525/1492/files/NTS.213_11390562-4f6f-48f4-96e2-3a415076c309.jpg?v=1781704626",
-      "manual": true
-    },
-    {
-      "name": "The Correspondent — Virginia Evans (paperback)",
-      "best_price_chf": 19.9,
-      "best_url": "https://www.orellfuessli.ch/shop/home/artikeldetails/A1076590478",
-      "best_store": "Orell Füssli",
-      "last_checked": "2026-06-26",
-      "image_url": "https://images.thalia.media/-/BF2000-2000/b418dddc1c4248e08d10baccf7681fba/the-correspondent-taschenbuch-virginia-evans-englisch.jpeg"
     }
   ]
 }
