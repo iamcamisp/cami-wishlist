@@ -7,7 +7,10 @@ cd "$(dirname "$0")"
 LOG="update_prices.log"
 echo "=== $(date -Iseconds) ===" >> "$LOG"
 
-python3 update_prices.py >> "$LOG" 2>&1 || {
+# Pin the system interpreter: bare `python3` resolves to Homebrew 3.14, whose
+# site-packages are unreadable to this user, so pydantic/anthropic import as
+# empty namespace packages. /usr/bin/python3 has all four deps we need.
+/usr/bin/python3 update_prices.py >> "$LOG" 2>&1 || {
   echo "update_prices.py failed — see $LOG" >> "$LOG"
   exit 1
 }
