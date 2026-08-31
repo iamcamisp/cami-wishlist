@@ -1,7 +1,7 @@
 {
   "owner": "Cami",
   "currency": "CHF",
-  "last_updated": "2026-08-17",
+  "last_updated": "2026-08-31",
   "items": [
     {
       "name": "Massage Voucher",
@@ -22,17 +22,17 @@
     {
       "name": "Sonos Sub Mini (Black)",
       "best_price_chf": 450.0,
-      "best_url": "https://www.digitec.ch/en/s1/product/sonos-sub-mini-wi-fi-multiroom-systems-22142620",
-      "best_store": "Digitec",
-      "last_checked": "2026-08-17",
+      "best_url": "https://www.galaxus.ch/en/s1/product/sonos-sub-mini-wi-fi-multiroom-systems-22142619",
+      "best_store": "Galaxus",
+      "last_checked": "2026-08-31",
       "image_url": "https://imgsrv.toppreise.ch/img/704625/360-c6b9d5"
     },
     {
       "name": "Neil Young - After the Gold Rush (LP)",
-      "best_price_chf": 28.47,
-      "best_url": "https://www.amazon.de/After-Gold-Rush-Vinyl-LP/dp/B00004WNS8",
+      "best_price_chf": 22.9,
+      "best_url": "https://www.amazon.de/After-Gold-Rush-Rmst-Vinyl/dp/B002VRNIHM",
       "best_store": "Amazon.de",
-      "last_checked": "2026-08-17",
+      "last_checked": "2026-08-31",
       "image_url": "https://upload.wikimedia.org/wikipedia/en/2/2d/After_the_Gold_Rush.jpg"
     },
     {
@@ -46,10 +46,10 @@
     },
     {
       "name": "New Balance 530 MR530CK (grey, size 38)",
-      "best_price_chf": 86.0,
+      "best_price_chf": 105.0,
       "best_url": "https://www.galaxus.ch/de/s8/product/new-balance-mr530ck-40-sneakers-35898695",
       "best_store": "Galaxus",
-      "last_checked": "2026-08-17",
+      "last_checked": "2026-08-31",
       "image_url": "https://img01.ztat.net/article/spp-media-p1/194c5f2249264083a51281ab12da3155/9ea44f3b41c749dbb8ac6497f10beede.jpg?imwidth=1800&filter=packshot"
     },
     {
