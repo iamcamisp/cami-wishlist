@@ -81,6 +81,17 @@
       "original_price": 185,
       "original_currency": "EUR",
       "last_checked": "2026-10-30"
+    },
+    {
+      "name": "Icebreaker Damen Merino Blend 800 RealFleece Jacke (XS, Black)",
+      "best_price_chf": 228.95,
+      "best_url": "https://www.bergzeit.ch/p/icebreaker-damen-merino-blend-800-realfleece-jacke/1140233/#itemId=1140233-010",
+      "best_store": "Bergzeit",
+      "image_url": "https://static.bergzeit.com/product_gallery_regular/1140233-010_pic1.jpg",
+      "manual": true,
+      "size": "XS",
+      "color": "Black",
+      "last_checked": "2026-11-05"
     }
   ]
 }
